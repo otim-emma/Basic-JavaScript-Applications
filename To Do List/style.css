@@ -1,0 +1,21 @@
+.layOut{
+    display: inline-flex;
+}
+body {
+    background-image: url("AAA.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    border-radius: 5px;
+    height: 300px;
+    width: 250px;
+    background-color: white;
+    text-align: center;
+}

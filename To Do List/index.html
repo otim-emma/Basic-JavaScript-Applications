@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+ <div class="container">
+   <h1>To Do List</h1> 
+   <div class="inputArea">
+       <input type="text" class="text" placeholder="write task...">
+       <button class="button">Add</button>
+   </div>
+   <ul class="listItem"></ul>
+ </div>
+   <script>
+       const AddButton = document.querySelector('.button');
+       const textArea = document.querySelector('.text');
+       const listItem = document.querySelector('.listItem');
+       let box = JSON.parse(localStorage.getItem('box')) || [];
+
+       function listContent() {
+           listItem.innerHTML = '';
+           box.forEach((item, index) => {
+               const li = document.createElement('li');
+               li.innerHTML = `
+                   <div class="layOut">
+                       <span>${item}</span>
+                       <button class="btn-delete" data-index="${index}">delete</button>
+                   </div>
+               `;
+               listItem.appendChild(li);
+           });
+           addDeleteEvent();
+       }
+
+       function addDeleteEvent() {
+           document.querySelectorAll('.btn-delete').forEach(button => {
+               button.addEventListener('click', function() {
+                   const index = this.getAttribute('data-index');
+                   box.splice(index, 1);
+                   localStorage.setItem('box', JSON.stringify(box));
+                   listContent();
+               });
+           });
+       }
+
+       AddButton.addEventListener('click', function() {
+           if (textArea.value) {
+               box.push(textArea.value);
+               localStorage.setItem('box', JSON.stringify(box));
+               listContent();
+               textArea.value = '';
+           } else {
+               alert("write down a task please!");
+           }
+       });
+
+       listContent();
+   </script>
+</body>
+</html>
