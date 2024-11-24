@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Rick and Morty characters</title>
+</head>
+<body>
+  <h1>RICK AND MORTY CHARACTERS</h1>
+<div id="characters"></div>
+<div class="pag-buttons">
+  <button id="prev-btn">prev</button>
+  <button id="next-btn">next</button>
+</div>
+<script>
+  const charactersContainer = document.querySelector('#characters');
+  const previous = document.querySelector('#prev-btn');
+  const next = document.querySelector('#next-btn');
+  let display = 5;
+  let count = 1;
+  let list = [];
+  let pages = 0;
+
+  fetch('https://rickandmortyapi.com/api/character')
+    .then(res => res.json())
+    .then(data => {
+      list = data.results.flat(); 
+      localStorage.setItem('person',JSON.stringify(list))
+      pages = Math.ceil(list.length / display);
+      main(list, count);
+    });
+
+  function main(list, count) {
+    charactersContainer.innerHTML = ''; 
+
+    const startIndex = display * (count - 1);
+    const endIndex = startIndex + display;
+
+    const pagData = list.slice(startIndex, endIndex);
+
+    pagData.forEach(el => {
+      const characterDiv = document.createElement('div');
+      characterDiv.className = 'character';
+      characterDiv.innerHTML = `
+      
+        <p>name: ${el.name}</p>
+        <p>status: ${el.status}</p>
+        <p>species: ${el.species}</p>
+      `;
+      charactersContainer.appendChild(characterDiv);
+    });
+
+    previous.disabled = (count === 1);
+    next.disabled = (count === pages);
+  }
+
+  previous.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (count > 1) {
+      count--;
+      main(list, count);
+    }
+  });
+
+  next.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (count < pages) {
+      count++;
+      main(list, count);
+    }
+  });
+  
+</script>
+</body>
+</html>
