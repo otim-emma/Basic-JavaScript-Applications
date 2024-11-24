@@ -1,2 +1,1 @@
-# To-Do-App
-JavaScript To Do App
+This repository contains simple practice applications.
